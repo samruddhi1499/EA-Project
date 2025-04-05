@@ -26,15 +26,15 @@ public class OrderUIController {
     public String showOrderForm(Model model) {
         model.addAttribute("order", new Order());
         model.addAttribute("user", new User());
-        return "order";  // Correctly points to orderForm.html
+        return "order"; 
     }
 
     @GetMapping("/list")
     public String listOrders(Model model) {
-        // Use service to fetch all orders
-        List<Order> orders = orderService.getAllOrders().collectList().block(); // blocking for UI simplicity
+       
+        List<Order> orders = orderService.getAllOrders().collectList().block(); 
         model.addAttribute("orders", orders);
-        return "orderList"; // Thymeleaf template name
+        return "orderList";
     }
 
     
@@ -51,39 +51,36 @@ public class OrderUIController {
             Model model) {
 
         try {
-            // Create User and Order objects
+        	
+        	LocalDateTime date = LocalDateTime.now();
+           
             User user = new User(userId, username, password, typeOfUser);
-            Order order = new Order(null, userId, stockName, quantity, price, "PLACED", orderType,LocalDateTime.now(), user);
+            Order order = new Order(null, userId, stockName, quantity, price, "PLACED", orderType, date, user);
 
-            
-            //mapper
+         
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+            mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
             File file = new File("target/order.json");
-            try {
-                mapper.writeValue(file, order);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mapper.writeValue(file, order);
 
             
-            // Save Order
             orderService.placeOrder(order).subscribe();
 
-            // Success message
             model.addAttribute("message", "Order placed successfully by user: " + username);
             return "orderSuccess";
 
         } catch (Exception e) {
-            // Return error page with custom message if any error occurs
             model.addAttribute("errorMessage", "An error occurred while placing the order: " + e.getMessage());
-            return "error";  // Maps to error.html
+            return "error"; 
         }
     }
 
-    // Local error handler for this controller
+
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e, Model model) {
         model.addAttribute("errorMessage", "An unexpected error occurred: " + e.getMessage());
-        return "error";  // Maps to error.html
+        return "error"; 
     }
 }

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>All Orders</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/list.css">
 </head>
 <body>
     <h1>All Orders</h1>
 
-    <table border="1">
+    <table class="styled-table">
         <thead>
             <tr>
                 <th>Order ID</th>
@@ -30,12 +30,12 @@
                 <td th:text="${order.price}">Price</td>
                 <td th:text="${order.status}">Status</td>
                 <td th:text="${order.orderType}">Type</td>
-				<td th:text="${order.orderDateTime}">Date</td>
+                <td th:text="${order.orderDateTime}">Date</td>
             </tr>
         </tbody>
     </table>
 
     <br>
-    <a href="/orders/form">Place New Order</a>
+    <a class="nav-link" href="/orders/form">Place New Order</a>
 </body>
 </html>

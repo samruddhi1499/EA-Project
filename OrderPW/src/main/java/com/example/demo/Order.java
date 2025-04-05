@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 
 @Document(collection = "orders")
@@ -21,6 +23,7 @@ public class Order {
     private double price;
     private String status;
     private String orderType; 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime orderDateTime;
 
     
