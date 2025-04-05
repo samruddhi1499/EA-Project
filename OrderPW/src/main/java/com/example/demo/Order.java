@@ -3,6 +3,9 @@ package com.example.demo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +20,9 @@ public class Order {
     private int quantity;
     private double price;
     private String status;
+    private String orderType; 
+    private LocalDateTime orderDateTime;
+
     
     private User user;
     
@@ -25,7 +31,7 @@ public class Order {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Order(String id, String userId, String stockName, int quantity, double price, String status, User user) {
+	public Order(String id, String userId, String stockName, int quantity, double price, String status, String orderType,LocalDateTime orderDateTime, User user) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -33,6 +39,8 @@ public class Order {
 		this.quantity = quantity;
 		this.price = price;
 		this.status = status;
+	    this.orderType = orderType;
+	    this.orderDateTime = orderDateTime; 
 		this.user = user;	}
 	public String getId() {
 		return id;
@@ -70,8 +78,21 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+	public String getOrderType() {
+	    return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+	    this.orderType = orderType;
+	}
+
+	public LocalDateTime getOrderDateTime() {
+	    return orderDateTime;
+	}
+
+	public void setOrderDateTime(LocalDateTime orderDateTime) {
+	    this.orderDateTime = orderDateTime;
+	}
     
     
     

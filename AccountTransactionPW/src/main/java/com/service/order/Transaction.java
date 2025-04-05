@@ -1,6 +1,8 @@
 package com.service.order;
 
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +15,7 @@ public class Transaction {
     private String stockName;
     private int quantity;
     private String status;
+//    private String orderType;             // BUY or SELL
     
     
 	public Transaction() {
@@ -79,8 +82,15 @@ public class Transaction {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-    
-	
+//    
+//	public String getOrderType() {
+//        return orderType;
+//    }
+//
+//    public void setOrderType(String orderType) {
+//        this.orderType = orderType;
+//    }
+
     
 }
 

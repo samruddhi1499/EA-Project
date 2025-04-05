@@ -2,7 +2,14 @@ package com.example.demo;
 
 import com.example.demo.Order;
 import com.example.demo.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.demo.OrderService;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +29,15 @@ public class OrderUIController {
         return "order";  // Correctly points to orderForm.html
     }
 
+    @GetMapping("/list")
+    public String listOrders(Model model) {
+        // Use service to fetch all orders
+        List<Order> orders = orderService.getAllOrders().collectList().block(); // blocking for UI simplicity
+        model.addAttribute("orders", orders);
+        return "orderList"; // Thymeleaf template name
+    }
+
+    
     @PostMapping("/submitOrder")
     public String submitOrder(
     		@RequestParam("username") String username,
@@ -31,13 +47,25 @@ public class OrderUIController {
             @RequestParam("stockName") String stockName,
             @RequestParam("quantity") int quantity,
             @RequestParam("price") double price,
+            @RequestParam("orderType") String orderType,
             Model model) {
 
         try {
             // Create User and Order objects
             User user = new User(userId, username, password, typeOfUser);
-            Order order = new Order(null, userId, stockName, quantity, price, "PLACED", user);
+            Order order = new Order(null, userId, stockName, quantity, price, "PLACED", orderType,LocalDateTime.now(), user);
 
+            
+            //mapper
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("target/order.json");
+            try {
+                mapper.writeValue(file, order);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            
             // Save Order
             orderService.placeOrder(order).subscribe();
 

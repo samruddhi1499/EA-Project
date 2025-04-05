@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,6 +16,7 @@ public class OrderService {
 	    @Autowired private WebClient.Builder webClientBuilder;
 
 	    public Mono<Order> placeOrder(Order order) {
+	    	order.setOrderDateTime(LocalDateTime.now());
 	        order.setStatus("PLACED");
 
 	        return orderRepository.save(order)
@@ -40,6 +43,10 @@ public class OrderService {
 	    public Mono<Order> getOrderById(String id) {
 	        return orderRepository.findById(id);
 	    }
+	    public Flux<Order> getAllOrders() {
+	        return orderRepository.findAll();
+	    }
+
 	}
 
 
